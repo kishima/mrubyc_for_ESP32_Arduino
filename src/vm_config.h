@@ -78,4 +78,6 @@
 /* 1: 32bit alignment */
 #define MRBC_REQUIRE_32BIT_ALIGNMENT 0
 
+#define MRBC_NO_TIMER
+
 #endif

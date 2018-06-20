@@ -91,7 +91,10 @@ static inline void mrbc_printf_init( mrb_printf *pf, char *buf, int size,
   pf->p = pf->buf = buf;
   pf->buf_end = buf + size - 1;
   pf->fstr = fstr;
-  pf->fmt = (struct RPrintfFormat){0};
+  int i=0;
+  for(i=0;i<sizeof(pf->fmt);i++){
+    *(((char*)(&pf->fmt))+i)=0;
+  }
 }
 
 
