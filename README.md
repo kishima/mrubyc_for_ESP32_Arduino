@@ -3,6 +3,8 @@
 
 An Arduino library of mruby/c for ESP32 Arduino
 
+This library can be used for M5Stack.
+
 
 **This is my experimental work. There is no guarantee about this library.**
 
