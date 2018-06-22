@@ -95,6 +95,27 @@ static void class_arduino_digital_read(mrb_vm *vm, mrb_value *v, int argc )
 	mode = digitalRead(pin);
 	SET_INT_RETURN(mode);
 }
+
+static void class_arduino_random(mrb_vm *vm, mrb_value *v, int argc )
+{
+	int32_t i=0;
+	int32_t min=0,max=0;
+	if(GET_TT_ARG(1) == MRB_TT_FIXNUM){
+		min = GET_INT_ARG(1);
+	}else{
+		SET_FALSE_RETURN();
+		return;
+	}
+	if(GET_TT_ARG(2) == MRB_TT_FIXNUM){
+		max = GET_INT_ARG(2);
+	}else{
+		SET_FALSE_RETURN();
+		return;
+	}
+	i = random(min,max);
+	SET_INT_RETURN(i);
+}
+
 void define_arduino_class()
 {
 	mrb_class *class_arduino;
@@ -103,6 +124,7 @@ void define_arduino_class()
 	mrbc_define_method(0, class_arduino, "pin_mode", class_arduino_pin_mode);
 	mrbc_define_method(0, class_arduino, "digital_write", class_arduino_digital_wirte);
 	mrbc_define_method(0, class_arduino, "digital_read", class_arduino_digital_read);
+	mrbc_define_method(0, class_arduino, "random", class_arduino_random);
 
 }
 

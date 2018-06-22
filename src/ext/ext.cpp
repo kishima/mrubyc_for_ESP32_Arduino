@@ -23,5 +23,8 @@ void mrbc_define_methods(void)
 	define_arduino_class();
 	define_serial_class();
 	//define_esp32_class();
+#ifdef ARDUINO_M5Stack_Core_ESP32
+	define_m5stack_class();
+#endif
 }
 
