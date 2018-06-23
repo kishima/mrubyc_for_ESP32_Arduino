@@ -100,14 +100,26 @@ static void class_arduino_random(mrb_vm *vm, mrb_value *v, int argc )
 {
 	int32_t i=0;
 	int32_t min=0,max=0;
-	if(GET_TT_ARG(1) == MRB_TT_FIXNUM){
-		min = GET_INT_ARG(1);
-	}else{
-		SET_FALSE_RETURN();
-		return;
-	}
-	if(GET_TT_ARG(2) == MRB_TT_FIXNUM){
-		max = GET_INT_ARG(2);
+	if(argc==2){
+		if(GET_TT_ARG(1) == MRB_TT_FIXNUM){
+			min = GET_INT_ARG(1);
+		}else{
+			SET_FALSE_RETURN();
+			return;
+		}
+		if(GET_TT_ARG(2) == MRB_TT_FIXNUM){
+			max = GET_INT_ARG(2);
+		}else{
+			SET_FALSE_RETURN();
+			return;
+		}
+	}else if(argc==1){
+		if(GET_TT_ARG(1) == MRB_TT_FIXNUM){
+			max = GET_INT_ARG(1);
+		}else{
+			SET_FALSE_RETURN();
+			return;
+		}
 	}else{
 		SET_FALSE_RETURN();
 		return;
