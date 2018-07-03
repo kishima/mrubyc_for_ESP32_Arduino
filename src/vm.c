@@ -14,6 +14,7 @@
 */
 
 #include "vm_config.h"
+#include "libmrubyc_config.h"
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
@@ -1643,10 +1644,16 @@ inline static int op_tclass( mrb_vm *vm, uint32_t code, mrb_value *regs )
 inline static int op_stop( mrb_vm *vm, uint32_t code, mrb_value *regs )
 {
   if( GET_OPCODE(code) == OP_STOP ) {
-    int i;
-    for( i = 0; i < MAX_REGS_SIZE; i++ ) {
-      mrbc_release(&vm->regs[i]);
+#ifdef ENABLE_RMIRB
+     if(vm->callinfo_top!=0){
+#endif
+      int i;
+      for( i = 0; i < MAX_REGS_SIZE; i++ ) {
+        mrbc_release(&vm->regs[i]);
+      }
+#ifdef ENABLE_RMIRB
     }
+#endif
   }
 
   vm->flag_preemption = 1;

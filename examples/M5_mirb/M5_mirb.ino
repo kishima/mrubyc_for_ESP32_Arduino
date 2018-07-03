@@ -1,6 +1,6 @@
 #include <mrubyc_for_ESP32_Arduino.h>
+#include <M5Stack.h>
 #include <WiFi.h>
-#include "mrubyc.h"
 
 const char* ssid     = "";
 const char* password = "";
@@ -18,21 +18,8 @@ int buff_ptr=0;
 void mrubyc(uint8_t *mrbbuf)
 {
 
-  if(!first){
-    mrbc_init_alloc(memory_pool, MEMORY_SIZE);
-    init_static();
-    mrbc_define_methods();
-    
-    vm = mrbc_vm_open(NULL);
-    if( vm == 0 ) {
-      //fprintf(stderr, "Error: Can't open VM.\n");
-      Serial.println("Can't open VM");
-      return;
-    }
-  }
-  
   if( mrbc_load_mrb(vm, mrbbuf) != 0 ) {
-    Serial.println("mrbc_load_mrb error");//(stderr, "Error: Illegal bytecode.\n");
+    Serial.println("mrbc_load_mrb error");
     return;
   }
   
@@ -45,18 +32,34 @@ void mrubyc(uint8_t *mrbbuf)
     vm->flag_preemption = 0;
     vm->callinfo_top = 0;
     vm->error_code = 0;
-    //printf("vm->regs[0].tt=%d\n",vm->regs[0].tt);
   }
-  Serial.println("RUN!\n");
   mrbc_vm_run(vm);
-  Serial.println("DONE!\n");
   if(first==0)first=1;
 }
 
 void setup()
 {
     Serial.begin(115200);
-    delay(10);
+    delay(100);
+
+    //initialize mruby/c
+    mrbc_init_alloc(memory_pool, MEMORY_SIZE);
+    init_static();
+    mrbc_define_methods();
+    
+    vm = mrbc_vm_open(NULL);
+    if( vm == 0 ) {
+      Serial.println("Can't open VM");
+      return;
+    }
+
+    M5.begin();
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(10, 10);
+    M5.Lcd.setTextColor(WHITE);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.printf("Connecting WiFi:");
+    M5.Lcd.printf(ssid);
 
     Serial.println();
     Serial.println();
@@ -64,11 +67,16 @@ void setup()
     Serial.println(ssid);
 
     WiFi.begin(ssid, password);
-
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
     }
+
+    M5.Lcd.setCursor(10, 30);
+    M5.Lcd.printf("Connected! :");
+    char ipaddr[4*4+1]; 
+    WiFi.localIP().toString().toCharArray(ipaddr,4*4+1);
+    M5.Lcd.printf(ipaddr);
 
     Serial.println("");
     Serial.println("WiFi connected.");
@@ -93,12 +101,11 @@ void loop(){
 }
 
 int read_message(WiFiClient& client){
-  Serial.println("new irep.");        
   String currentLine = "";               
   int remain=4;
   int size=0;
   unsigned char header[4];
-  Serial.println("wating recv");   
+  Serial.print("> ");   
   while (client.connected()) {
     size = client.read(&header[4-remain],remain);
     if(size<0){
@@ -113,11 +120,10 @@ int read_message(WiFiClient& client){
   }
   uint16_t irep_len = bin_to_uint16(&header[2]);
   remain = irep_len;
-  Serial.print("wating recv:irep_len=");
-  Serial.println(irep_len);
+  //Serial.print("wating recv:irep_len=");
+  //Serial.println(irep_len);
   while (client.connected()) {           
     size = client.read(&buff[buff_ptr+(irep_len-remain)],remain);
-    //Serial.println(size);
     if(size<0){
       delay(10);
       continue;
@@ -127,13 +133,11 @@ int read_message(WiFiClient& client){
        continue;
     }
     int i=0;
-    Serial.print("buff_ptr=");
-    Serial.print(buff_ptr);
-    Serial.print("\n");
-    Serial.print(">>>>>>>>>>>>>>>>>>>>> Run VM\n");
     mrubyc(&buff[buff_ptr]);
     buff_ptr+=irep_len;
+    Serial.println("");   
     return 0;
   }
   return -1;
 }
+
