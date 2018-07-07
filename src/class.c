@@ -23,6 +23,7 @@
 #include "static.h"
 #include "symbol.h"
 #include "console.h"
+#include "opcode.h"
 
 #include "c_array.h"
 #include "c_hash.h"
@@ -437,11 +438,47 @@ static void c_object_class(mrb_vm *vm, mrb_value v[], int argc)
 // Object.new
 static void c_object_new(mrb_vm *vm, mrb_value v[], int argc)
 {
-  *v = mrbc_instance_new(vm, v->cls, 0);
-  // call "initialize"
-  mrbc_funcall(vm, "initialize", v, argc);
-}
+  mrb_value new_obj = mrbc_instance_new(vm, v->cls, 0);
 
+  char syms[]="______initialize";
+  uint32_to_bin( 1,(uint8_t*)&syms[0]);
+  uint16_to_bin(10,(uint8_t*)&syms[4]);
+
+  uint32_t code[2] = {
+    MKOPCODE(OP_SEND) | MKARG_A(0) | MKARG_B(0) | MKARG_C(argc),
+    MKOPCODE(OP_ABORT)
+    };
+   mrb_irep irep = {
+    0,     // nlocals
+    0,     // nregs
+    0,     // rlen
+    2,     // ilen
+    0,     // plen
+    (uint8_t *)code,   // iseq
+    NULL,  // pools
+    (uint8_t *)syms,  // ptr_to_sym
+    NULL,  // reps
+  };
+
+  mrbc_release(&v[0]);
+  v[0] = new_obj;
+  mrbc_dup(&new_obj);
+
+  mrb_irep *org_pc_irep = vm->pc_irep;
+  uint16_t  org_pc = vm->pc;
+  mrb_value* org_regs = vm->current_regs;
+  vm->pc = 0;
+  vm->pc_irep = &irep;
+  vm->current_regs = v;
+
+  mrbc_vm_run(vm);
+
+  vm->pc = org_pc;
+  vm->pc_irep = org_pc_irep;
+  vm->current_regs = org_regs;
+
+  SET_RETURN(new_obj);
+}
 
 //================================================================
 /*! (method) instance variable getter

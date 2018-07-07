@@ -32,6 +32,8 @@ extern "C" {
 
 #define MKOPCODE(op)                ((op & 0x7f)<<24)
 #define MKARG_A(c)                  ((c & 0xff)<<1 | (c & 0x01)>>8)
+#define MKARG_B(c)                  ((c & 0x1fc)<<6 | (c & 0x03)<<22)
+#define MKARG_C(c)                  ((c & 0x7e)<<15 | (c & 0x01)<<31)
 
 
 #define MAXARG_Bx                   (0xffff)

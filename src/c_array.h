@@ -50,6 +50,7 @@ int mrbc_array_insert(mrb_value *ary, int idx, mrb_value *set_val);
 mrb_value mrbc_array_remove(mrb_value *ary, int idx);
 void mrbc_array_clear(mrb_value *ary);
 int mrbc_array_compare(const mrb_value *v1, const mrb_value *v2);
+void mrbc_array_minmax(mrb_value *ary, mrb_value **pp_min_value, mrb_value **pp_max_value);
 void mrbc_init_class_array(struct VM *vm);
 
 

@@ -34,18 +34,24 @@
     mrbc_array_delete
 
  (setter)
-  --[name]-------------[arg]---[ret]-------
+  --[name]-------------[arg]---[ret]-------------------------------------------
     mrbc_array_set	*T	int
     mrbc_array_push	*T	int
     mrbc_array_unshift	*T	int
     mrbc_array_insert	*T	int
 
  (getter)
-  --[name]-------------[arg]---[ret]---[note]------------------------
+  --[name]-------------[arg]---[ret]---[note]----------------------------------
     mrbc_array_get		T	Data remains in the container
     mrbc_array_pop		T	Data does not remain in the container
     mrbc_array_shift		T	Data does not remain in the container
     mrbc_array_remove		T	Data does not remain in the container
+
+ (others)
+    mrbc_array_resize
+    mrbc_array_clear
+    mrbc_array_compare
+    mrbc_array_minmax
 */
 
 
@@ -386,6 +392,41 @@ int mrbc_array_compare(const mrb_value *v1, const mrb_value *v2)
     int res = mrbc_compare( &v1->array->data[i], &v2->array->data[i] );
     if( res != 0 ) return res;
   }
+}
+
+
+//================================================================
+/*! get min, max value
+
+  @param  ary		pointer to target value
+  @param  pp_min_value	returns minimum mrb_value
+  @param  pp_max_value	returns maxmum mrb_value
+*/
+void mrbc_array_minmax(mrb_value *ary, mrb_value **pp_min_value, mrb_value **pp_max_value)
+{
+  mrb_array *h = ary->array;
+
+  if( h->n_stored == 0 ) {
+    *pp_min_value = NULL;
+    *pp_max_value = NULL;
+    return;
+  }
+
+  mrb_value *p_min_value = h->data;
+  mrb_value *p_max_value = h->data;
+
+  int i;
+  for( i = 1; i < h->n_stored; i++ ) {
+    if( mrbc_compare( &h->data[i], p_min_value ) < 0 ) {
+      p_min_value = &h->data[i];
+    }
+    if( mrbc_compare( &h->data[i], p_max_value ) > 0 ) {
+      p_max_value = &h->data[i];
+    }
+  }
+
+  *pp_min_value = p_min_value;
+  *pp_max_value = p_max_value;
 }
 
 
@@ -794,6 +835,70 @@ static void c_array_each(mrb_vm *vm, mrb_value v[], int argc)
 }
 
 
+//================================================================
+/*! (method) min
+*/
+static void c_array_min(mrb_vm *vm, mrb_value v[], int argc)
+{
+  // Subset of Array#min, not support min(n).
+
+  mrb_value *p_min_value, *p_max_value;
+
+  mrbc_array_minmax(&v[0], &p_min_value, &p_max_value);
+  if( p_min_value == NULL ) {
+    SET_NIL_RETURN();
+    return;
+  }
+
+  mrbc_dup(p_min_value);
+  SET_RETURN(*p_min_value);
+}
+
+
+//================================================================
+/*! (method) max
+*/
+static void c_array_max(mrb_vm *vm, mrb_value v[], int argc)
+{
+  // Subset of Array#max, not support max(n).
+
+  mrb_value *p_min_value, *p_max_value;
+
+  mrbc_array_minmax(&v[0], &p_min_value, &p_max_value);
+  if( p_max_value == NULL ) {
+    SET_NIL_RETURN();
+    return;
+  }
+
+  mrbc_dup(p_max_value);
+  SET_RETURN(*p_max_value);
+}
+
+
+//================================================================
+/*! (method) minmax
+*/
+static void c_array_minmax(mrb_vm *vm, mrb_value v[], int argc)
+{
+  // Subset of Array#minmax, not support minmax(n).
+
+  mrb_value *p_min_value, *p_max_value;
+  mrb_value nil = mrb_nil_value();
+  mrb_value ret = mrbc_array_new(vm, 2);
+
+  mrbc_array_minmax(&v[0], &p_min_value, &p_max_value);
+  if( p_min_value == NULL ) p_min_value = &nil;
+  if( p_max_value == NULL ) p_max_value = &nil;
+
+  mrbc_dup(p_min_value);
+  mrbc_dup(p_max_value);
+  mrbc_array_set(&ret, 0, p_min_value);
+  mrbc_array_set(&ret, 1, p_max_value);
+
+  SET_RETURN(ret);
+}
+
+
 
 //================================================================
 /*! initialize
@@ -823,4 +928,7 @@ void mrbc_init_class_array(struct VM *vm)
   mrbc_define_method(vm, mrbc_class_array, "unshift", c_array_unshift);
   mrbc_define_method(vm, mrbc_class_array, "dup", c_array_dup);
   mrbc_define_method(vm, mrbc_class_array, "each", c_array_each);
+  mrbc_define_method(vm, mrbc_class_array, "min", c_array_min);
+  mrbc_define_method(vm, mrbc_class_array, "max", c_array_max);
+  mrbc_define_method(vm, mrbc_class_array, "minmax", c_array_minmax);
 }

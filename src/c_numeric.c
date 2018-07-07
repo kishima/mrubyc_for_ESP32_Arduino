@@ -167,8 +167,9 @@ static void c_fixnum_rshift(mrb_vm *vm, mrb_value v[], int argc)
 */
 static void c_fixnum_abs(mrb_vm *vm, mrb_value v[], int argc)
 {
-  int32_t num = GET_INT_ARG(0);
-  SET_INT_RETURN( num < 0 ? -num : num );
+  if( v[0].i < 0 ) {
+    v[0].i = -v[0].i;
+  }
 }
 
 
@@ -333,6 +334,17 @@ static void c_float_power(mrb_vm *vm, mrb_value v[], int argc)
 
 
 //================================================================
+/*! (method) abs
+*/
+static void c_float_abs(mrb_vm *vm, mrb_value v[], int argc)
+{
+  if( v[0].d < 0 ) {
+    v[0].d = -v[0].d;
+  }
+}
+
+
+//================================================================
 /*! (method) to_i
 */
 static void c_float_to_i(mrb_vm *vm, mrb_value v[], int argc)
@@ -369,6 +381,7 @@ void mrbc_init_class_float(mrb_vm *vm)
 #if MRBC_USE_MATH
   mrbc_define_method(vm, mrbc_class_float, "**", c_float_power);
 #endif
+  mrbc_define_method(vm, mrbc_class_float, "abs", c_float_abs);
   mrbc_define_method(vm, mrbc_class_float, "to_i", c_float_to_i);
   mrbc_define_method(vm, mrbc_class_float, "to_f", c_ineffect);
 #if MRBC_USE_STRING

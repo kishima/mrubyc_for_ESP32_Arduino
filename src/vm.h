@@ -142,6 +142,33 @@ inline static uint16_t bin_to_uint16( const void *s )
 #endif
 }
 
+/*!@brief
+  Set 16bit big endian value from memory.
+
+  @param  s Input value.
+  @param  bin Pointer of memory.
+  @return sizeof(uint16_t).
+*/
+inline static void uint16_to_bin(uint16_t s, uint8_t *bin)
+{
+  *bin++ = (s >> 8) & 0xff;
+  *bin   = s & 0xff;
+}
+
+/*!@brief
+  Set 32bit big endian value from memory.
+
+  @param  l Input value.
+  @param  bin Pointer of memory.
+  @return sizeof(uint32_t).
+*/
+static inline void uint32_to_bin(uint32_t l, uint8_t *bin)
+{
+  *bin++ = (l >> 24) & 0xff;
+  *bin++ = (l >> 16) & 0xff;
+  *bin++ = (l >> 8) & 0xff;
+  *bin   = l & 0xff;
+}
 
 #ifdef __cplusplus
 }
