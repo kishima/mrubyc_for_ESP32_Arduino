@@ -14,7 +14,10 @@
 /* Specific Devices */
 //#define USE_GPS_NEO6M
 //#define USE_RTC
-//#define ENABLE_RMIRB
+#define USE_M5AVATAR
+
+/* for remote mrib */
+#define ENABLE_RMIRB
 
 /* for debug */
 #define ESP32_DEBUG
