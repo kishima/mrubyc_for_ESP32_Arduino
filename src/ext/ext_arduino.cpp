@@ -18,6 +18,7 @@ static void class_arduino_delay(mrb_vm *vm, mrb_value *v, int argc )
 	delay(d);
 	SET_TRUE_RETURN();
 }
+
 static uint8_t sym_to_pinmode(mrb_sym sym_in){
 	uint8_t mode = INPUT;
 
@@ -30,6 +31,18 @@ static uint8_t sym_to_pinmode(mrb_sym sym_in){
 	}
 	return mode;
 }
+
+static uint8_t sym_to_siglevel(mrb_sym sym_in){
+	uint8_t sig = LOW;
+
+	if(sym_in == str_to_symid("HIGH")){
+		sig = HIGH;
+	}else{
+		sig = LOW;
+	}
+	return sig;
+}
+
 static void class_arduino_pin_mode(mrb_vm *vm, mrb_value *v, int argc )
 {
 	int pin = 0;
@@ -77,9 +90,9 @@ static void class_arduino_digital_wirte(mrb_vm *vm, mrb_value *v, int argc )
 		SET_FALSE_RETURN();
 		return;
 	}
-	uint8_t mode = sym_to_pinmode( sym_in );
+	uint8_t sig = sym_to_siglevel( sym_in );
 
-	digitalWrite(pin,mode);
+	digitalWrite(pin,sig);
 	SET_TRUE_RETURN();
 }
 static void class_arduino_digital_read(mrb_vm *vm, mrb_value *v, int argc )
@@ -91,9 +104,9 @@ static void class_arduino_digital_read(mrb_vm *vm, mrb_value *v, int argc )
 		SET_FALSE_RETURN();
 		return;
 	}
-	uint8_t mode = INPUT;
-	mode = digitalRead(pin);
-	SET_INT_RETURN(mode);
+	uint8_t sig = INPUT;
+	sig = digitalRead(pin);
+	SET_INT_RETURN(sig);
 }
 
 static void class_arduino_random(mrb_vm *vm, mrb_value *v, int argc )
