@@ -209,6 +209,9 @@ static void c_fixnum_times(mrb_vm *vm, mrb_value v[], int argc)
   // count of times
   int cnt = v[0].i;
 
+  mrb_value block = v[1];
+  mrbc_dup(&block);
+
   mrbc_push_callinfo(vm, 0);
 
   // adjust reg_top for reg[0]==Proc
@@ -216,6 +219,10 @@ static void c_fixnum_times(mrb_vm *vm, mrb_value v[], int argc)
 
   int i;
   for( i=0 ; i<cnt ; i++ ){
+    if(v[1].tt!=MRB_TT_PROC){//TODO:in normal case, ref is increased. Need to be checked
+      v[1]=block;
+      if(block.proc->ref_count < 2) mrbc_dup(&block);
+    }
     // set index
     mrbc_release( &v[2] );
     v[2].tt = MRB_TT_FIXNUM;
@@ -228,7 +235,6 @@ static void c_fixnum_times(mrb_vm *vm, mrb_value v[], int argc)
     // execute OP_CALL
     mrbc_vm_run(vm);
   }
-
   mrbc_pop_callinfo(vm);
 }
 
