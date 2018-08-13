@@ -154,16 +154,20 @@ void define_arduino_class()
 }
 
 static HardwareSerial* HwSerial = NULL;
-static HardwareSerial Serial1(2);
 
 static void class_serial_begin(mrb_vm *vm, mrb_value *v, int argc )
 {
-	if(HwSerial==NULL)HwSerial = &Serial1;
-	int baud = GET_INT_ARG(1);
-	DEBUG_PRINT("Serial(2)->begin baudrate=");
-	DEBUG_PRINTLN(baud);
-	HwSerial->begin(baud);
-	SET_TRUE_RETURN();
+  //TODO: re-consider better interface implementation
+  //      Pin no should be set by user
+  if(HwSerial==NULL){
+    HwSerial = new HardwareSerial(2);
+    //Don't use Serial1 since these ports are used by SPI-Flash
+  }
+  int baud = GET_INT_ARG(1);
+  DEBUG_PRINT("Serial(2)->begin baudrate=");
+  DEBUG_PRINTLN(baud);
+  HwSerial->begin(baud);
+  SET_TRUE_RETURN();
 }
 static void class_serial_end(mrb_vm *vm, mrb_value *v, int argc )
 {
