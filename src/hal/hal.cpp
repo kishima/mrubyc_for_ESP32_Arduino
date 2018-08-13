@@ -13,7 +13,7 @@
 
 extern "C" void hal_init_cpp(void){
 #ifdef USE_USB_SERIAL_FOR_STDIO
-  Serial.begin(DEBUG_SERIAL_BAUDRATE);
+  Serial.begin(SERIAL_FOR_STDIO_BAUDRATE);
 #endif
 }
 

@@ -49,6 +49,26 @@ while true
 end
 ```
 
+## M5Stack support
+
+This library can be applied to M5Stack.
+In source code, a flag "ARDUINO_M5Stack_Core_ESP32" that comes from compile options is checked.
+If it is defined, M5 class will be defined. This class is also in development stage. Please refer ext_m5stack.cpp if you want to check more detail.
+
+## Configuration
+
+Some configuration parameters can be modified in "libmrubyc_config.h".
+
+1. USE_USB_SERIAL_FOR_STDIO
+   If this is defined, standard out is connected to USB Serial(UART0). Default baudrate is 115200.
+1. USE_M5AVATAR
+   If this is defined, M5Stack Avatar Class is defined. (Under construction...)
+   https://github.com/meganetaaan/m5stack-avatar
+1. ENABLE_RMIRB
+   If this is defined, remote mirb is available. In that case, mruby/c is only used for remote mrib because this affects VM behavior.
+1. ESP32_DEBUG
+   If this is defined, some debug messages are shown.
+
 ## Future work (if I'm good...)
 
 - define mruby methods of Arduino library.
