@@ -24,9 +24,7 @@ extern "C" void hal_write_string(char* text){
 }
 
 extern "C" void hal_delay(unsigned long t){
-#ifdef USE_USB_SERIAL_FOR_STDIO
   delay(t);
-#endif
 }
 
 
