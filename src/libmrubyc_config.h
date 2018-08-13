@@ -12,6 +12,7 @@
 #define ESP32MRBC_VERSION "0.1.0"
 
 /* Specific Devices */
+#define USE_USB_SERIAL_FOR_STDIO
 //#define USE_GPS_NEO6M
 //#define USE_RTC
 //#define USE_M5AVATAR

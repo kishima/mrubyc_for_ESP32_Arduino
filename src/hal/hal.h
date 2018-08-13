@@ -44,7 +44,7 @@ void hal_init(void);
 # define hal_enable_irq()  ((void)0)
 # define hal_disable_irq() ((void)0)
 # define hal_idle_cpu()    (hal_delay(1), mrbc_tick())
-
+void hal_init_cpp(void);
 
 /***** Inline functions *****************************************************/
 

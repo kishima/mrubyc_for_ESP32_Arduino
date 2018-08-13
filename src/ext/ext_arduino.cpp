@@ -216,9 +216,6 @@ static void class_serial_write(mrb_vm *vm, mrb_value *v, int argc )
 
 void define_serial_class()
 {
-#ifdef ESP32_DEBUG
-	Serial.begin(DEBUG_SERIAL_BAUDRATE);
-#endif
 	mrb_class *class_serial;
 	class_serial = mrbc_define_class(0, "Serial", mrbc_class_object);
 	mrbc_define_method(0, class_serial, "begin", class_serial_begin);

@@ -8,6 +8,7 @@
 
 void hal_init(void)
 {
+  hal_init_cpp();
 }
 
 int hal_write(int fd, const void *buf, int nbytes)
