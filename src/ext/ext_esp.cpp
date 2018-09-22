@@ -2,14 +2,14 @@
   ext_esp.cpp
 
   Defining extension methods of ESP32
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
 
-#include "mrubyc_for_ESP32_Arduino.h"
+#include <mrubyc_for_ESP32_Arduino.h>
 #include "ext.h"
-#include "esp_system.h"
+#include <esp_system.h>
 
 static void class_esp_idf_version(mrb_vm *vm, mrb_value *v, int argc )
 {
@@ -26,4 +26,3 @@ void define_esp_class(void)
   mrbc_define_method(0, class_esp, "idf_version", class_esp_idf_version);
 
 }
-

@@ -2,7 +2,7 @@
   mrubyc_for_ESP32_Arduino.h
 
   Header file for Arduino application
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
@@ -10,9 +10,8 @@
 #define __LIBMRUBYC_H__
 
 #include "mrubyc.h"
-#include "libmrubyc_config.h"
+#include "mrubyc_config.h"
 
 void mrbc_define_methods(void);
 
 #endif
-

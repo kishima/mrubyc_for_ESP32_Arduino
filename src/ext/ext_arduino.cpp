@@ -2,15 +2,14 @@
   ext_arduino.cpp
 
   Defining extension methods of Arduino
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
 
-#include "Arduino.h"
-#include "Wire.h"
-#include "mrubyc_for_ESP32_Arduino.h"
+#include <mrubyc_for_ESP32_Arduino.h>
 #include "ext.h"
+#include <Wire.h>
 
 static void class_arduino_delay(mrb_vm *vm, mrb_value *v, int argc )
 {
@@ -54,7 +53,7 @@ static void class_arduino_pin_mode(mrb_vm *vm, mrb_value *v, int argc )
 	}
 	//DEBUG_PRINT("pin=");
 	//DEBUG_PRINTLN(pin);
-	
+
 	mrb_sym sym_in = 0;
 	if(GET_TT_ARG(2) == MRB_TT_SYMBOL){
 		sym_in = GET_INT_ARG(2);
@@ -67,7 +66,7 @@ static void class_arduino_pin_mode(mrb_vm *vm, mrb_value *v, int argc )
 	uint8_t mode = sym_to_pinmode( sym_in );
 	//DEBUG_PRINT("mode=");
 	//DEBUG_PRINTLN(mode);
-	
+
 	pinMode(pin,mode);
 	SET_TRUE_RETURN();
 }
@@ -198,8 +197,8 @@ static void class_serial_readline(mrb_vm *vm, mrb_value *v, int argc )
 			SET_RETURN(string);
 			return;
 		}
-		
-		if (readp > sizeof (readbuff) - 1) { 
+
+		if (readp > sizeof (readbuff) - 1) {
 			readp = 0;
 			DEBUG_PRINT("\nOVERFLOW\n");
 			SET_FALSE_RETURN();
@@ -224,4 +223,3 @@ void define_serial_class()
 	mrbc_define_method(0, class_serial, "readline", class_serial_readline);
 	mrbc_define_method(0, class_serial, "write", class_serial_write);
 }
-

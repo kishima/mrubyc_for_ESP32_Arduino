@@ -2,7 +2,7 @@
   ext.cpp
 
   Defining extension methods for ESP32
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
@@ -38,6 +38,11 @@ void mrbc_define_methods(void)
   define_esp_class();
   define_arduino_class();
   define_serial_class();
+
+#ifdef USE_RGB_LCD
+  define_rgb_lcd_class();
+#endif
+
 #ifdef ARDUINO_M5Stack_Core_ESP32
   define_m5stack_class();
 #ifdef USE_M5AVATAR
@@ -45,4 +50,3 @@ void mrbc_define_methods(void)
 #endif
 #endif
 }
-

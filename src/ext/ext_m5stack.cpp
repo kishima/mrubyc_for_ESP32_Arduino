@@ -2,10 +2,12 @@
   ext_m5stack.cpp
 
   Defining extension methods of Arduino
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
+#include "mrubyc_config.h"
+
 #ifdef ARDUINO_M5Stack_Core_ESP32
 
 #include "mrubyc_for_ESP32_Arduino.h"
@@ -112,7 +114,7 @@ static void class_lcd_set_text_size(mrb_vm *vm, mrb_value *v, int argc ){
 		SET_FALSE_RETURN();
 		return;
 	}
-	
+
 	M5.Lcd.setTextSize(size);
 
 	SET_NIL_RETURN();
@@ -133,7 +135,7 @@ static void disp_method_rect(mrb_vm *vm, mrb_value *v, int argc, uint8_t type ){
 		return;
 	}
 	int32_t x,y,w,h;
-	
+
 	x = GET_INT_ARG(1);
 	y = GET_INT_ARG(2);
 	w = GET_INT_ARG(3);
@@ -167,7 +169,7 @@ static void disp_method_circle(mrb_vm *vm, mrb_value *v, int argc, uint8_t type 
 		return;
 	}
 	int32_t x,y,r;
-	
+
 	x = GET_INT_ARG(1);
 	y = GET_INT_ARG(2);
 	r = GET_INT_ARG(3);
@@ -199,7 +201,7 @@ static void disp_method_triangle(mrb_vm *vm, mrb_value *v, int argc, uint8_t typ
 		return;
 	}
 	int32_t x0,y0,x1,y1,x2,y2;
-	
+
 	x0 = GET_INT_ARG(1);
 	y0 = GET_INT_ARG(2);
 	x1 = GET_INT_ARG(3);
@@ -253,4 +255,3 @@ void define_m5stack_class(void){
 }
 
 #endif //ARDUINO_M5Stack_Core_ESP32
-

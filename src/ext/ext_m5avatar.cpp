@@ -2,14 +2,15 @@
   ext_m5avatar.cpp
 
   Defining extension methods of Arduino
-  
+
   Copyright (c) 2018, katsuhiko kageyama All rights reserved.
 
 */
-#include "mrubyc_for_ESP32_Arduino.h"
+#include "mrubyc_config.h"
 
 #ifdef USE_M5AVATAR
 
+#include "mrubyc_for_ESP32_Arduino.h"
 #include "ext.h"
 #include <M5Stack.h>
 #include <Avatar.h>
@@ -62,7 +63,7 @@ void define_m5avatar_class(void){
 	class_m5avatar = mrbc_define_class(0, "M5Avatar", mrbc_class_object);
 	mrbc_define_method(0, class_m5avatar, "initialize", class_m5avatar_initialize);
 	mrbc_define_method(0, class_m5avatar, "speech", class_m5avatar_speech);
-	
+
 }
 
 #endif
