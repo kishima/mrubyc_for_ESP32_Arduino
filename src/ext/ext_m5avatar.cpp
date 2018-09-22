@@ -10,7 +10,7 @@
 
 #ifdef USE_M5AVATAR
 
-#include "mrubyc_for_ESP32_Arduino.h"
+#include "mrubyc.h"
 #include "ext.h"
 #include <M5Stack.h>
 #include <Avatar.h>

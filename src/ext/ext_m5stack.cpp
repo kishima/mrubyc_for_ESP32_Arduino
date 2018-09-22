@@ -10,7 +10,7 @@
 
 #ifdef ARDUINO_M5Stack_Core_ESP32
 
-#include "mrubyc_for_ESP32_Arduino.h"
+#include "mrubyc.h"
 #include "ext.h"
 #include <M5Stack.h>
 

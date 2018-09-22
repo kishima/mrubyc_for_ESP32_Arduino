@@ -10,7 +10,7 @@
 
 #ifdef USE_RGB_LCD
 
-#include "mrubyc_for_ESP32_Arduino.h"
+#include "mrubyc.h"
 #include "ext.h"
 #include <Wire.h>
 #include <rgb_lcd.h>
@@ -18,7 +18,6 @@
 static rgb_lcd* lcd=NULL;
 
 static void class_rbg_lcd_initialize(mrb_vm *vm, mrb_value *v, int argc ){
-  SET_NIL_RETURN();
   if(lcd!=NULL){
     DEBUG_PRINTLN("RGB_LCD is already existing!");
     return;

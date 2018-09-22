@@ -7,7 +7,8 @@
 
 */
 
-#include <mrubyc_for_ESP32_Arduino.h>
+#include "mrubyc_config.h"
+#include "mrubyc.h"
 #include "ext.h"
 #include <Wire.h>
 

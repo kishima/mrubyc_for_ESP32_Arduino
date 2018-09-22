@@ -9,8 +9,8 @@
 #ifndef __LIBMRUBYC_H__
 #define __LIBMRUBYC_H__
 
-#include "mrubyc.h"
 #include "mrubyc_config.h"
+#include "mrubyc.h"
 
 void mrbc_define_user_class(void);
 
