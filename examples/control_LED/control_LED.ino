@@ -8,14 +8,14 @@ static uint8_t mempool[MEMSIZE];
 void setup() {
   delay(1000);
 
-  Serial.println("--- begin setup"); 
+  Serial.println("--- begin setup");
   mrbc_init(mempool, MEMSIZE);
-  mrbc_define_methods();
+  mrbc_define_user_class();
   if(NULL == mrbc_create_task( code, 0 )){
     Serial.println("mrbc_create_task error");
     return;
   }
-  Serial.println("--- run mruby script"); 
+  Serial.println("--- run mruby script");
   mrbc_run();
 }
 

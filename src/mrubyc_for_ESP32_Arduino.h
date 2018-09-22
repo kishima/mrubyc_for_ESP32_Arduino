@@ -12,6 +12,6 @@
 #include "mrubyc.h"
 #include "mrubyc_config.h"
 
-void mrbc_define_methods(void);
+void mrbc_define_user_class(void);
 
 #endif

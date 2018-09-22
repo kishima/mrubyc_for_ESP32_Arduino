@@ -9,7 +9,7 @@ void setup() {
   delay(100);
 
   mrbc_init(mempool, MEMSIZE);
-  mrbc_define_methods();
+  mrbc_define_user_class();
   if(NULL == mrbc_create_task( code, 0 )){
     Serial.println("mrbc_create_task error");
     return;

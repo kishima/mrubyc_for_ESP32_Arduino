@@ -14,6 +14,8 @@
 extern "C" void hal_init_cpp(void){
 #ifdef USE_USB_SERIAL_FOR_STDIO
   Serial.begin(SERIAL_FOR_STDIO_BAUDRATE);
+  delay(100);
+  Serial.println("Serial is initialized by mruby/c HAL");
 #endif
 }
 

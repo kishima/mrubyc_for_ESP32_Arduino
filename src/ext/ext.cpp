@@ -32,7 +32,7 @@ void define_mrubyc_class(void)
   mrbc_define_method(0, mrubyc, "version", class_mrubyc_version);
 }
 
-void mrbc_define_methods(void)
+void mrbc_define_user_class(void)
 {
   define_mrubyc_class();
   define_esp_class();
