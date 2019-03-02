@@ -1,5 +1,6 @@
 # mrubyc_for_ESP32_Arduino
 
+** Latest version will be released in https://github.com/mruby-esp32/mrubyc-esp32-arduino . This lib is no longer updated. **
 
 An Arduino library of mruby/c for ESP32 Arduino
 
